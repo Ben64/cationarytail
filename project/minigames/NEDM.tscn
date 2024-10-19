@@ -1,0 +1,153 @@
+[gd_scene load_steps=21 format=3 uid="uid://c04sm1u6ulx54"]
+
+[ext_resource type="Script" path="res://minigames/MeshInstance3d.cs" id="1_2itq2"]
+[ext_resource type="Shader" path="res://minigames/NEDM.gdshader" id="1_4pk4r"]
+[ext_resource type="Script" path="res://minigames/FirstPersonController.cs" id="4_ikfk8"]
+[ext_resource type="Script" path="res://minigames/FirstPersonCamera.cs" id="4_ut8ix"]
+[ext_resource type="AudioStream" uid="uid://b8obh5y8v8l1r" path="res://assets/audio/effects/Meow 2.mp3" id="5_17p26"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lgrtr"]
+
+[sub_resource type="Sky" id="Sky_275fp"]
+sky_material = SubResource("ProceduralSkyMaterial_lgrtr")
+
+[sub_resource type="Environment" id="Environment_u8sme"]
+background_mode = 2
+sky = SubResource("Sky_275fp")
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+glow_enabled = true
+fog_enabled = true
+volumetric_fog_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_728fw"]
+
+[sub_resource type="Compositor" id="Compositor_uwby7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ymjia"]
+subdivide_width = 100
+subdivide_height = 100
+subdivide_depth = 100
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m457u"]
+render_priority = 0
+shader = ExtResource("1_4pk4r")
+shader_parameter/albedo = null
+shader_parameter/albedo2 = null
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_scale = 0.15
+shader_parameter/color_deep = null
+shader_parameter/color_shallow = null
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = -0.75
+shader_parameter/edge_scale = 0.1
+shader_parameter/near = 1.0
+shader_parameter/far = 100.0
+shader_parameter/edge_color = null
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ftaro"]
+albedo_color = Color(0.462745, 0.0313726, 1, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_okmqe"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_60ay2"]
+size = Vector3(100, 0.1, 100)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grmmn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kln4h"]
+render_priority = 0
+shader = ExtResource("1_4pk4r")
+shader_parameter/albedo = Color(0, 0, 0.72549, 1)
+shader_parameter/albedo2 = Color(0, 0.886275, 0.996078, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.2
+shader_parameter/noise_scale = 8.685
+shader_parameter/height_scale = 0.21
+shader_parameter/color_deep = Color(0, 0, 0.639216, 1)
+shader_parameter/color_shallow = Color(0, 0, 0.878431, 0.603922)
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = -0.75
+shader_parameter/edge_scale = 0.275
+shader_parameter/near = 1.15
+shader_parameter/far = 99.22
+shader_parameter/edge_color = Color(0.364706, 0.596078, 0.956863, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tftuq"]
+size = Vector2(50, 50)
+subdivide_width = 200
+subdivide_depth = 200
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8q5lo"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lmu72"]
+
+[node name="Nedm" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u8sme")
+camera_attributes = SubResource("CameraAttributesPractical_728fw")
+compositor = SubResource("Compositor_uwby7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.668266, 0)
+mesh = SubResource("BoxMesh_ymjia")
+script = ExtResource("1_2itq2")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65311, 0.668266, 0)
+mesh = SubResource("BoxMesh_ymjia")
+surface_material_override/0 = SubResource("ShaderMaterial_m457u")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+freeze = true
+
+[node name="Floor" type="MeshInstance3D" parent="RigidBody3D"]
+transform = Transform3D(20.0698, 0, 0, 0, 6.78957, 0, 0, 0, 24.1438, 0, -0.171421, 0)
+material_override = SubResource("StandardMaterial3D_ftaro")
+mesh = SubResource("PlaneMesh_okmqe")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_60ay2")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_grmmn")
+material_overlay = SubResource("ShaderMaterial_kln4h")
+gi_mode = 2
+mesh = SubResource("PlaneMesh_tftuq")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("snd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0.90986, 4)
+script = ExtResource("4_ikfk8")
+snd = NodePath("../Meow")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_8q5lo")
+
+[node name="PlayerModel" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_lmu72")
+
+[node name="Node3D" type="Node3D" parent="CharacterBody3D" node_paths=PackedStringArray("camera")]
+script = ExtResource("4_ut8ix")
+camera = NodePath("Camera3D")
+mouseSensitivity = 16.0
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Node3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Meow" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("5_17p26")

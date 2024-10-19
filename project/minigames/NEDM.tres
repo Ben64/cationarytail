@@ -1,0 +1,26 @@
+[gd_resource type="VisualShader" load_steps=3 format=3 uid="uid://bkjecwme3xhly"]
+
+[sub_resource type="VisualShaderNodeParticleRandomness" id="VisualShaderNodeParticleRandomness_i6fva"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_tyrdd"]
+output_port_for_preview = 0
+input_name = "lifetime"
+
+[resource]
+code = "shader_type sky;
+
+
+
+void sky() {
+}
+"
+mode = 3
+flags/use_half_res_pass = false
+flags/use_quarter_res_pass = false
+flags/disable_fog = false
+flags/use_debanding = false
+nodes/start/0/position = Vector2(940, 100)
+nodes/start/2/node = SubResource("VisualShaderNodeParticleRandomness_i6fva")
+nodes/start/2/position = Vector2(90, 160)
+nodes/start/3/node = SubResource("VisualShaderNodeInput_tyrdd")
+nodes/start/3/position = Vector2(400, 160)
