@@ -1,9 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdp663vtdnenq"]
+[gd_scene load_steps=8 format=3 uid="uid://bdp663vtdnenq"]
 
 [ext_resource type="PackedScene" uid="uid://dgvmjpupptnko" path="res://locations/animal_rescue/animal_rescue.tscn" id="1_k0dg7"]
 [ext_resource type="PackedScene" uid="uid://81h1ottsp85g" path="res://utility/teleporter.tscn" id="2_v4x1m"]
 [ext_resource type="PackedScene" uid="uid://clceinkcx81eu" path="res://story_scenes/03-0_first_day_home_adopted/03-0_first_day_home_adopted.tscn" id="3_qqyny"]
-[ext_resource type="PackedScene" uid="uid://c3iur4l67uyh2" path="res://characters/player_character/player_character.tscn" id="4_obbyh"]
+[ext_resource type="PackedScene" uid="uid://bty6hmjgyr0cn" path="res://characters/npcs/cat_owner/cat_owner.tscn" id="5_2h7mx"]
+[ext_resource type="Script" path="res://characters/npcs/cat_owner/CatOwner.cs" id="5_ojcin"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_momkw"]
+radius = 6.0
+height = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_occh0"]
+size = Vector2(18, 20)
 
 [node name="Template" type="Node2D"]
 
@@ -12,6 +20,25 @@
 [node name="Teleporter" parent="AnimalRescue" instance=ExtResource("2_v4x1m")]
 destination = ExtResource("3_qqyny")
 
-[node name="PlayerCharacter" parent="AnimalRescue" instance=ExtResource("4_obbyh")]
-position = Vector2(-100, 28)
-scale = Vector2(0.75, 0.75)
+[node name="CatOwner" parent="." instance=ExtResource("5_2h7mx")]
+position = Vector2(-140, 0)
+script = ExtResource("5_ojcin")
+
+[node name="Camera2D" type="Camera2D" parent="CatOwner"]
+position_smoothing_enabled = true
+
+[node name="CollisionDetectionShape2" type="CollisionShape2D" parent="CatOwner"]
+z_index = 1
+position = Vector2(2, 22)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_momkw")
+
+[node name="DialogInteractionArea" type="Area2D" parent="CatOwner"]
+position = Vector2(140, 0)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CatOwner/DialogInteractionArea"]
+position = Vector2(-140, 22)
+shape = SubResource("RectangleShape2D_occh0")
+debug_color = Color(0.334957, 0.597671, 0.493724, 0.42)
